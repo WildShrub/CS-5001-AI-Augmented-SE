@@ -27,25 +27,17 @@ def get_max_sum(n):
     if n == 1:
         return 1
 
-    dp = [0] * (n + 1)
-    dp[0], dp[1] = 0, 1
-
+    res = [0, 1]
     for i in range(2, n + 1):
-        max_val = i
-        for divisor in [2, 3, 4, 5]:
-            max_val = max(max_val, dp[i // divisor] + dp[i % divisor])
-        dp[i] = max_val
-
-    return dp[n]
+        res.append(max(i, res[i // 2] + res[i // 3] + res[i // 4] + res[i // 5]))
+    return res[n]
 ```
 
-- Replaced list appending with pre-allocated list for better performance
-- Used descriptive variable names (dp for dynamic programming array)
-- Separated base cases for clarity
-- Used range-based loop instead of while loop for standard iteration
-- Extracted divisor values into a list for better readability
-- Maintained the same logic for calculating maximum sum
-- Preserved the exact same behavior as the original implementation
-- Improved code structure with consistent indentation and spacing
-- Added comments to explain the dynamic programming approach
-- Ensured the function returns the same results for all test cases
+- Preserved the original function signature and return type
+- Simplified the loop structure using a for loop instead of while
+- Removed redundant list initialization with append(0) and append(1)
+- Used integer division operator // for clarity
+- Maintained the same edge case behavior for n=0 and n=1
+- Kept the same calculation logic for the max sum
+- Improved readability by removing unnecessary parentheses and line breaks
+- Maintained the exact same behavior as validated by the tests

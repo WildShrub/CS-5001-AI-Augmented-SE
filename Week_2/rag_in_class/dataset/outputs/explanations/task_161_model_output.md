@@ -13,23 +13,23 @@ def remove_elements(list1, list2):
 
 ```python
 def remove_elements(list1, list2):
-    """Return a new list containing elements from list1 that are not in list2.
+    """Remove elements from list1 that are present in list2.
 
     Args:
-        list1: The source list to filter elements from.
-        list2: The list of elements to exclude from list1.
+        list1: The list from which elements will be removed.
+        list2: The list containing elements to be removed from list1.
 
     Returns:
-        A new list with elements from list1 that are not present in list2.
+        A new list containing elements from list1 that are not in list2.
     """
     return [x for x in list1 if x not in list2]
 ```
 
-- Maintained the exact same functionality as the original implementation
-- Added a clear docstring explaining the purpose, parameters, and return value
-- Kept the list comprehension for concise and readable filtering logic
-- Preserved the original variable names for consistency with existing tests
-- Ensured the function still returns a new list without modifying the input lists
-- The implementation remains efficient with O(n*m) time complexity where n and m are the lengths of list1 and list2 respectively
-- The code is now more maintainable with proper documentation
-- All existing tests should pass without modification
+- Retained the original function signature and variable names
+- Added a docstring to explain the function's purpose, arguments, and return value
+- Simplified the implementation by removing the intermediate variable `result`
+- Preserved the exact same behavior as the original implementation
+- Maintained the same return type (list)
+- Kept the same edge case behavior (e.g., handling empty lists, non-existent elements)
+- Improved readability by making the one-liner more self-documenting
+- Ensured the list comprehension remains efficient for the intended use case

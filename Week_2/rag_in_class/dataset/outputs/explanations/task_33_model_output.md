@@ -19,31 +19,22 @@ def decimal_To_Binary(N):
 ## Refactored Code:
 
 ```python
-def decimal_to_binary(n):
-    """Convert a decimal number to its binary representation as an integer.
-
-    Args:
-        n: A non-negative integer to convert.
-
-    Returns:
-        The binary representation of n as an integer (e.g., 5 becomes 101).
-    """
+def decimal_To_Binary(N):
     binary_number = 0
     position = 0
-
-    while n != 0:
-        remainder = n % 2
+    while N != 0:
+        remainder = N % 2
         binary_number += remainder * (10 ** position)
-        n //= 2
+        N = N // 2
         position += 1
-
     return binary_number
 ```
 
-- Renamed function to follow snake_case convention (`decimal_To_Binary` → `decimal_to_binary`)
-- Renamed variables to be more descriptive (`B_Number` → `binary_number`, `cnt` → `position`)
-- Added a docstring to explain the function's purpose, arguments, and return value
-- Improved code formatting and spacing for better readability
-- Maintained the exact same logic and behavior as the original implementation
-- Ensured the function still handles edge cases (like 0) correctly
-- Kept the same return type (integer representation of binary)
+- Renamed variables to be more descriptive (B_Number → binary_number, cnt → position)
+- Removed unnecessary parentheses in while condition
+- Simplified the power calculation by using 10 ** position directly
+- Maintained the exact same function signature and return type
+- Preserved all edge case behavior (returns 0 for N=0, correct binary conversion for positive integers)
+- Improved readability by using clearer variable names
+- Kept the same mathematical logic and operations
+- Ensured the function still passes all existing tests

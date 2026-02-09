@@ -32,35 +32,35 @@ def find_Max_Len_Even(str):
 ## Refactored Code:
 
 ```python
-def find_max_len_even(s):
-    max_length = 0
-    max_start = -1
-    current_length = 0
-    current_start = 0
+def find_Max_Len_Even(str):
+    n = len(str)
+    i = 0
+    currlen = 0
+    maxlen = 0
+    st = -1
 
-    for i, char in enumerate(s):
-        if char == ' ':
-            if current_length % 2 == 0 and current_length > max_length:
-                max_length = current_length
-                max_start = current_start
-            current_length = 0
-            current_start = i + 1
+    while i < n:
+        if str[i] == ' ':
+            if currlen % 2 == 0 and currlen > maxlen:
+                maxlen = currlen
+                st = i - currlen
+            currlen = 0
         else:
-            current_length += 1
+            currlen += 1
+        i += 1
 
-    if current_length % 2 == 0 and current_length > max_length:
-        max_length = current_length
-        max_start = current_start
+    if currlen % 2 == 0 and currlen > maxlen:
+        maxlen = currlen
+        st = i - currlen
 
-    return s[max_start:max_start + max_length] if max_start != -1 else "-1"
+    return str[st:st + maxlen] if st != -1 else "-1"
 ```
 
-- Renamed function and variables to follow Python naming conventions (snake_case)
-- Replaced while loop with for loop using enumerate for better readability
-- Simplified logic by tracking current_start separately
-- Removed redundant checks by combining conditions
-- Improved variable names to be more descriptive
-- Maintained exact same behavior as original implementation
-- Kept the same return format for edge cases
-- Reduced nesting levels for better readability
-- Preserved all original functionality as validated by tests
+- Combined conditions for maxlen update to improve readability
+- Simplified the final return statement using a ternary operator
+- Maintained all original variable names and function signature
+- Preserved exact behavior including edge cases (e.g., returning "-1" when no valid substring found)
+- Kept the same logic flow and loop structure
+- No changes to the return type or function parameters
+- Improved code formatting and indentation for better readability
+- All test cases should pass as the core logic remains unchanged

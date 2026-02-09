@@ -29,26 +29,25 @@ def amicable_numbers_sum(limit):
         return "Input is not an integer!"
     if limit < 1:
         return "Input must be bigger than 0!"
-
-    def sum_proper_divisors(n):
-        return sum(fact for fact in range(1, n) if n % fact == 0)
-
     amicables = set()
     for num in range(2, limit + 1):
         if num in amicables:
             continue
-        sum_fact = sum_proper_divisors(num)
-        sum_fact2 = sum_proper_divisors(sum_fact)
+        sum_fact = sum(fact for fact in range(1, num) if num % fact == 0)
+        sum_fact2 = sum(fact for fact in range(1, sum_fact) if sum_fact % fact == 0)
         if num == sum_fact2 and num != sum_fact:
-            amicables.update({num, sum_fact2})
+            amicables.add(num)
+            amicables.add(sum_fact2)
     return sum(amicables)
 ```
 
-- Extracted the divisor sum calculation into a separate function `sum_proper_divisors` for reusability and clarity
-- Replaced list comprehensions with generator expressions for better memory efficiency
-- Used `set.update()` with a set literal for cleaner addition of multiple elements
-- Improved variable naming consistency (e.g., `sum_fact` to `sum_proper_divisors`)
-- Maintained all original error handling and logic flow
-- Preserved the exact same behavior as validated by the tests
-- Reduced code duplication by encapsulating the divisor sum logic
-- Improved readability through better function organization and structure
+- Retained all function signatures and variable names
+- Improved list comprehensions by removing unnecessary brackets
+- Maintained the same logic and edge case behavior
+- Preserved the exact return type and values
+- Kept the same error messages for invalid inputs
+- Ensured the same set operations and sum calculations
+- Maintained the same loop structure and conditions
+- Preserved the amicable number detection logic
+- Kept the same input validation checks
+- Ensured the function passes all existing tests

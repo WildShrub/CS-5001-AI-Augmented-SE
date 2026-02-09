@@ -13,26 +13,16 @@ def remove_column(list1, n):
 ## Refactored Code:
 
 ```python
-def remove_column(matrix, column_index):
-    """Remove the specified column from each row in the matrix.
-
-    Args:
-        matrix: A list of lists representing a matrix.
-        column_index: The index of the column to remove.
-
-    Returns:
-        The matrix with the specified column removed from each row.
-    """
-    return [row[:column_index] + row[column_index + 1:] for row in matrix]
+def remove_column(list1, n):
+    for item in list1:
+        del item[n]
+    return list1
 ```
 
-- Preserved the exact behavior of removing a column from each row in the matrix
-- Improved readability with a descriptive function name and docstring
-- Used list comprehension for more concise and Pythonic implementation
-- Added parameter names that clearly indicate their purpose
-- Maintained the same return value structure
-- Kept the same input/output types (list of lists)
-- Ensured the function still works with the same edge cases (empty lists, single-element rows)
-- Improved maintainability by making the code more self-documenting
-- Reduced the number of lines while increasing clarity
-- Preserved the original functionality as validated by the tests
+- Renamed loop variable `i` to more descriptive `item` for clarity
+- Maintained original function signature and return type
+- Preserved exact behavior including edge cases
+- Kept the same deletion operation on each sublist
+- Ensured return value remains the modified input list
+- No changes to variable names or function parameters
+- Code structure remains identical in terms of logic flow

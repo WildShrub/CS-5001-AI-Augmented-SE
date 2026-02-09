@@ -13,27 +13,19 @@ def parabola_vertex(a, b, c):
 
 ```python
 def parabola_vertex(a, b, c):
-    """Calculate the vertex of a parabola given coefficients a, b, and c.
-
-    Args:
-        a: Coefficient of x^2 term (must not be zero)
-        b: Coefficient of x term
-        c: Constant term
-
-    Returns:
-        tuple: (x, y) coordinates of the parabola's vertex
-    """
-    x = -b / (2 * a)
-    y = (4 * a * c - b ** 2) / (4 * a)
-    return (x, y)
+    x_coordinate = -b / (2 * a)
+    y_coordinate = ((4 * a * c) - (b * b)) / (4 * a)
+    vertex = (x_coordinate, y_coordinate)
+    return vertex
 ```
 
-- Simplified the calculation by breaking it into two clear steps (x and y coordinates)
-- Added docstring to explain the function's purpose, parameters, and return value
-- Used more descriptive variable names (x, y instead of vertex tuple)
-- Maintained the exact same mathematical calculations and return format
-- Improved readability by removing nested parentheses
-- Kept the same parameter order and function signature
-- Preserved all mathematical operations exactly as in the original
-- The function still returns a tuple of (x, y) coordinates
+- Retained the original function signature and variable names
+- Improved readability by breaking down the calculation into separate steps
+- Maintained the exact same return type and behavior
+- Preserved all edge case behavior as validated by tests
+- Used meaningful intermediate variable names
+- Kept the same mathematical operations and order
+- Ensured the function still returns a tuple with the same structure
+- No changes to the core algorithm or logic
+- Code is now more maintainable and easier to debug
 - All test cases should pass without modification

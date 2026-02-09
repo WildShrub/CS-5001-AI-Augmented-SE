@@ -38,11 +38,11 @@ def max_height(node):
     return max(left_height, right_height) + 1
 ```
 
+- Retained the original class and function signatures exactly
 - Simplified the conditional logic by using `max()` function
-- Improved code formatting and readability with consistent indentation
-- Removed unnecessary `else` clause after `if` when returning
-- Maintained the same behavior as the original implementation
-- Kept the same function signature and return types
-- Preserved the recursive approach for calculating tree height
-- Ensured all test cases continue to pass
-- Reduced cognitive complexity by eliminating nested conditionals
+- Maintained the same recursive approach for calculating tree height
+- Preserved all edge case behavior (None node returns 0)
+- Kept the same return type (integer) for all cases
+- Improved readability by reducing nested conditionals
+- Maintained the same variable names (node, left_height, right_height)
+- Preserved the exact same behavior as validated by tests
