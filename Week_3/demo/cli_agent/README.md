@@ -1,11 +1,10 @@
-# Classroom CLI Agent (cca) – Ollama-hosted
+# Classroom CLI Agent (cca) – Ollama-based
 
 Default model: `devstral-small-2:24b-cloud`
 
 Override options:
-
-* `--model <name>`
-* `OLLAMA_MODEL` environment variable
+- `--model <name>`
+- `OLLAMA_MODEL` environment variable
 
 ---
 
@@ -28,79 +27,105 @@ pip install -e .
 
 ## Execution model
 
-The CLI separates **generation**, **execution**, and **version control** into distinct actions.
+The CLI separates concerns explicitly:
 
-### Program generation
-- Writes or updates source files under `src/`.
-- Triggered by `create` or as part of `full`.
-- No tests are generated or executed.
+1. **Program creation**
+   Writes or updates source code under `src/`.
 
-### Test generation
-- Writes pytest files under `tests/`.
-- Triggered by `test` or as part of `full`.
-- No test execution happens at this stage.
+2. **Test generation**
+   Writes pytest files under `tests/`.
 
-### Test execution and reporting
-- Runs pytest with coverage exactly once.
-- Observes results and produces a report.
-- Does not rewrite source code or tests.
+3. **Test execution and reporting**
+   Runs pytest with coverage once and evaluates results.
 
-### Commit and push
-- Explicit Git operations.
+4. **Commit and push**
+   Explicit Git operations.
+
+There is no implicit iteration and no built-in single-command pipeline.
+End-to-end execution is achieved by composing commands.
 
 ---
 
-## Create a program
+## Command overview
+
+### `create`
+
+Generate or update a single Python source module from a natural-language description.
+
+- Writes code under `src/`
+- Overwrites the target module file
+- Does not generate tests
+- Does not run pytest
+- Does not commit
 
 ```bash
-cca --repo output/demo_repo create \
-  --desc "A calculator with add, subtract, multiply, divide functions" \
-  --module src/calculator.py
+cca --repo <repo> create \
+  --desc "<natural language description>" \
+  --module <path/to/module.py>
 ```
-
-Creates or updates a single Python module.
 
 ---
 
-## Generate tests
+### `gen-tests`
 
-```
-cca --repo output/demo_repo gen-tests \
-  --desc "A calculator with add, subtract, multiply, divide functions" \
-  --module src/calculator.py \
-  --tests tests/test_calculator.py
-```
+Generate pytest tests for an existing module.
 
-```
-cca --repo output/demo_repo report --fail-on-coverage "90 percent"
-```
-
-Behavior:
-
-* Generates pytest tests for the target module.
-* Executes pytest with coverage once.
-* Produces a coverage-aware test report.
-* Coverage is evaluated against the provided target.
-
-No multi-pass rewriting is implied by this command. Coverage is measured, not enforced by iteration.
-
----
-
-## Commit and push
+- Writes pytest files under `tests/`
+- Uses the description and current module code
+- Does not execute tests
+- Does not check coverage
+- Does not modify source code
+- Does not commit
 
 ```bash
-cca --repo output/demo_repo commit  --message "Agent: add program + tests" --push
+cca --repo <repo> gen-tests \
+  --desc "<natural language description>" \
+  --module <path/to/module.py> \
+  --tests <path/to/test_file.py>
 ```
-
-Stages all changes, commits, and optionally pushes.
 
 ---
 
-## End-to-end
+### `report`
 
-The `full` command composes **program creation**, **test generation**, and **test reporting** into a single invocation.
+Execute tests once and evaluate results.
 
-### Example 1
+- Runs pytest with coverage exactly once
+- Produces a structured test report
+- Optionally enforces coverage thresholds
+- Does not modify source code or tests
+- Does not commit
+
+```bash
+cca --repo <repo> report
+```
+
+Optional flags:
+- `--fail-on-tests`
+- `--fail-on-coverage "<percent>"`
+
+---
+
+### `commit`
+
+Persist changes to version control.
+
+- Runs `git add -A`
+- Creates a commit
+- Optionally pushes to remote
+- Does not generate or execute code
+
+```bash
+cca --repo <repo> commit \
+  --message "<commit message>" \
+  --push
+```
+
+---
+
+## End-to-end examples (single command)
+
+### Calculator
 
 ```bash
 cca --repo output/demo_repo create \
@@ -112,13 +137,15 @@ cca --repo output/demo_repo gen-tests \
   --tests tests/test_calculator.py && \
 cca --repo output/demo_repo report \
   --fail-on-tests \
-  --fail-on-coverage "90 percent" && \
+  --fail-on-coverage "95 percent" && \
 cca --repo output/demo_repo commit \
   --message "Agent: add calculator program and tests" \
   --push
 ```
 
-### Example 2
+---
+
+### Prime Number Checker
 
 ```bash
 cca --repo output/demo_repo create \
@@ -130,13 +157,15 @@ cca --repo output/demo_repo gen-tests \
   --tests tests/test_prime_checker.py && \
 cca --repo output/demo_repo report \
   --fail-on-tests \
-  --fail-on-coverage "80 percent" && \
+  --fail-on-coverage "90 percent" && \
 cca --repo output/demo_repo commit \
   --message "Agent: add prime checker and tests" \
   --push
 ```
 
-### Example 3
+---
+
+### Flask Project
 
 ```bash
 cca --repo output/demo_flask create \
@@ -145,16 +174,18 @@ cca --repo output/demo_flask create \
 cca --repo output/demo_flask gen-tests \
   --desc "Create a minimal project with FLASK" \
   --module src/flask.py \
-  --tests tests/test_flask.py && \
+  --tests tests/test_flask.py --overwrite && \
 cca --repo output/demo_flask report \
   --fail-on-tests \
-  --fail-on-coverage "80 percent" && \
+  --fail-on-coverage "80 percent"  && \
 cca --repo output/demo_flask commit \
   --message "Agent: add flask project and tests" \
   --push
 ```
 
-### Example 4
+---
+
+### Streamlit Project
 
 ```bash
 cca --repo output/demo_streamlit create \
@@ -172,22 +203,27 @@ cca --repo output/demo_streamlit commit \
   --push
 ```
 
+
+### Flask Project 2
+
+```bash
+cca --repo output/demo_flask create \
+  --desc "Create a Flask project with routes, services, and templates" \
+  --module src/flask.py && \
+cca --repo output/demo_flask gen-tests \
+  --desc "Create a Flask project with routes, services, and templates" \
+  --module src/flask.py \
+  --tests tests/test_flask.py && \
+cca --repo output/demo_flask report \
+  --fail-on-tests \
+  --fail-on-coverage "80 percent" && \
+cca --repo output/demo_flask commit \
+  --message "Agent: add flask project and tests" \
+  --push
+```
+
 ---
 
-## Outputs
+## Help
 
-* Generated source files under `src/`
-* Generated tests under `tests/`
-* Coverage and pytest results evaluated during execution
-* Report artifacts written to the repository (location configurable)
-
----
-
-## Configuration
-
-Global flags available to all commands:
-
-* `--repo`
-* `--model`
-* `--host`
-* `--temperature`
+If a command does not appear in `cca --help`, it does not exist.
