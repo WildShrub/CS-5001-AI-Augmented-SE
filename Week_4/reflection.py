@@ -9,7 +9,7 @@ from langchain_core.runnables import RunnablePassthrough
 
 # --- Configuration ---
 # Requires a local Ollama server (default: http://localhost:11434)
-# and the selected model pulled, e.g.: ollama pull llama3.1
+# and the selected model pulled, e.g.: ollama pull devstral-small-2:24b-cloud
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "devstral-small-2:24b-cloud")
 TEMPERATURE = float(os.getenv("OLLAMA_TEMPERATURE", "0.0"))
